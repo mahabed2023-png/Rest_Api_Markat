@@ -41,5 +41,25 @@ def register(request):
 @permission_classes([IsAuthenticated])
 
 def currentUser(request):
-    user = SignupSerializer(request.user)
+    user = UserSerializer(request.user , many=False)
     return Response(user.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+
+def updata_User(request):
+    user = request.user
+    data = request.data 
+    
+    user.first_name = data.get('first_name', user.first_name)
+    user.last_name = data.get('last_name', user.last_name)
+    user.email = data.get('email', user.email)
+    user.username = data.get('email', user.username)
+    if data.get('password') and data['password'] != '':
+        user.password = make_password(data['password'])
+        
+        
+    user.save()
+    serializer = UserSerializer(user , many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
