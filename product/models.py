@@ -9,13 +9,14 @@ class Category(models.TextChoices):
     Food = 'food'
     Kids = 'kids'
     Home = 'home'
+    Phone = 'phone'
 
 
 class Product(models.Model):
     
     name = models.CharField(max_length=255, default="", blank=False )
     description = models.TextField(max_length=255, default="", blank=False)
-    price = models.DecimalField(max_digits=7, decimal_places=2,default=0)
+    price = models.DecimalField(max_digits=100, decimal_places=2,default=0)
     brand = models.CharField(max_length=255, default="", blank=False)
     category = models.CharField(max_length=40,choices=Category.choices)
     ratings = models.DecimalField(max_digits=3, decimal_places=2, default=0)
