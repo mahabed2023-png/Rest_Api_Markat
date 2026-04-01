@@ -7,7 +7,7 @@ from .models import Product, Review
 from .serializers import ProductSerializers
 from .filters import ProductsFilter
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , IsAdminUser
 from django.db.models import Avg
 # Create your views here.
 
@@ -60,7 +60,7 @@ def new_prouduct(request):
     
     
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated , IsAdminUser])
 
 def update_prouduct(request, pk):
     

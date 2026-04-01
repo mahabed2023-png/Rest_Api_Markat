@@ -1,4 +1,6 @@
+from copy import replace
 from datetime import datetime, timedelta
+from django.utils import timezone
 import email
 import token
 import token
@@ -92,14 +94,15 @@ def forgot_password(request):
         )
     profile, created = Profile.objects.get_or_create(user=user)
 
-    token = get_random_string(40)
-    expire_date = datetime.now() + timedelta(minutes=30) 
-    user.profile.reset_password_token = token
-    user.profile.reset_password_token_expire = expire_date
-    user.profile.save()
+    token = get_random_string(40).replace('\n', '').replace('\r', '')
+    expire_date = timezone.now() + timedelta(minutes=30) 
+    profile.reset_password_token = token
+    profile.reset_password_token_expire = expire_date
+    profile.save()
 
     host = get_current_host(request)
-    link = f"{host}/api/reset_password/{token}"
+    link = f"http://127.0.0.1:8000/api/reset_password/{token}/"
+    link = link.strip()
     body = f'Your password reset link is: {link}'
     
     try:
@@ -124,7 +127,7 @@ def reset_password(request, token):
     email = data.get('email')
     user = get_object_or_404(User, profile__reset_password_token=token)
 
-    if user.profile.reset_password_expire.replace(tzinfo=None) < datetime.now(): 
+    if user.profile.reset_password_token_expire.replace(tzinfo=None) < datetime.now(): 
         return Response(
             {'error': 'Token is expired'}, 
             status=status.HTTP_404_NOT_FOUND
