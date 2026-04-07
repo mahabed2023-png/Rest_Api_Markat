@@ -1,1 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 
+# Environments (المجلد الذي يحتوي على المكتبات)
+env/
+venv/
+ENV/
+
+# Database (قاعدة البيانات المحلية)
+*.sqlite3
+
+# Static & Media (الملفات التي ترفعها أثناء التجربة)
+media/
+staticfiles/
+
+# Environment variables (ملفات السرية إذا استخدمتها)
+.env
+
+# IDEs (إعدادات برامج البرمجة)
+.vscode/
+.idea/
